@@ -8,7 +8,7 @@ import "dotenv/config"
 
 const app = express();
 
-const CONNECTION_STRING = process.env.CONNECT_DB || 'mongodb://127.0.0.1:27017/database';
+const CONNECTION_STRING = process.env.CONNECT_DB;
 mongoose.connect(CONNECTION_STRING);
 
 app.use(express.json());
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(
 	cors({
 			 credentials: true,
-			 origin: process.env.FRONT_URL_LOCAL
+			 origin: process.env.FRONTEND_URL_LOCAL
 		 })
 );
 
@@ -25,9 +25,14 @@ const sessionOptions = {
 	resave: false,
 	saveUninitialized: false,
 };
-app.use(
-	session(sessionOptions)
-);
+if (process.env.NODE_ENV !== "development") {
+	sessionOptions.proxy = true;
+	sessionOptions.cookie = {
+		sameSite: "none",
+		secure: true,
+	};
+}
+app.use(session(sessionOptions));
 
 UsersController(app);
 AuthController(app);
