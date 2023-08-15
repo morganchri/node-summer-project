@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
 										   firstName: String,
 										   lastName: String,
 										   role: {type:String, enum: ["casual", "researcher", "professional"]},
-										   owned: JSON,
-										   liked: Array},
+	  									   funds: { type: Number, default: 0 }
+									   },
 									   {collections: "users"});
 
 export default userSchema;
