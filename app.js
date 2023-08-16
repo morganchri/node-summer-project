@@ -4,6 +4,7 @@ import cors from 'cors'
 import session from "express-session";
 import mongoose from "mongoose";
 import AuthController from "./controllers/users/auth-controller.js";
+import LikesRoutes from "./controllers/likes/Routes.js";
 import "dotenv/config"
 
 const app = express();
@@ -36,5 +37,6 @@ app.use(session(sessionOptions));
 
 UsersController(app);
 AuthController(app);
+LikesRoutes(app);
 const port = process.env.PORT || 4000;
 app.listen(port)
