@@ -1,6 +1,8 @@
 import likesModel from "./likes-model.js";
 
-export const getStock = (userID, stockTicker) => likesModel.findOne({userID: userID, stockTicker});
+export const getStock = (userID, stockTicker) => likesModel.findOne({userID: userID, stockTicker: stockTicker});
+
+export const getAllStocks = () => likesModel.find();
 
 export const likeStock = (user, stockTicker) => likesModel.create({user, stockTicker});
 

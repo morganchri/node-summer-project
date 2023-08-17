@@ -17,6 +17,8 @@ function LikesRoutes(app) {
 		// console.log(req.params)
 
 		const likes = await likesDao.getStock(userID, stockTicker);
+		console.log("Already Liked")
+		console.log(likes)
 		if (likes) {
 			res.sendStatus(200);
 			return;
@@ -92,10 +94,29 @@ function LikesRoutes(app) {
 		res.json(owned);
 	}
 
+	const getAllLikes = async (req, res) => {
+		const userID = req.params.uid;
+		console.log(userID);
+		if (!userID) {
+			res.sendStatus(401);
+			return;
+		}
+		let likes = await likesDao.getAllStocks();
+		console.log(likes)
+		if (!likes) {
+			res.sendStatus(403);
+			return;
+		}
+		console.log("Likes");
+		console.log(likes);
+		res.json(likes);
+	}
+
 	app.post("/api/likes/:stockTicker/like", userLikesStock);
 	app.post("/api/owned/:stockTicker/buy", userBuysStock);
 	app.post("/api/owned/:stockTicker/sell", userSellsStock);
-	app.get("/api/owned/:uid/get", getOwnedStocks)
+	app.get("/api/owned/:uid/get", getOwnedStocks);
+	app.get("/api/likes/:uid/get", getAllLikes);
 }
 
 export default LikesRoutes;
