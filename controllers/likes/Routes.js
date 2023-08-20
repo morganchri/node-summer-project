@@ -42,7 +42,7 @@ function LikesRoutes(app) {
 			return;
 		}
 		if (owned.owned) {
-			if (owned.owned[stockTicker] >= 1) {
+			if (owned.owned[stockTicker] >= 0) {
 				owned.owned[stockTicker] += 1;
 				// console.log("Owned Stocks");
 				// console.log(owned);

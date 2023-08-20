@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import AuthController from "./controllers/users/auth-controller.js";
 import LikesRoutes from "./controllers/likes/Routes.js";
 import "dotenv/config"
+import userRoutes from "./controllers/user-to-user/UserRoutes.js";
 
 const app = express();
 
@@ -38,5 +39,6 @@ app.use(session(sessionOptions));
 UsersController(app);
 AuthController(app);
 LikesRoutes(app);
+userRoutes(app);
 const port = process.env.PORT || 4000;
 app.listen(port)
