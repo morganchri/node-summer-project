@@ -1,5 +1,4 @@
 import * as likesDao from "./likes-dao.js"
-import likesModel from "./likes-model.js";
 import * as ownedDao from "../owned/owned-dao.js";
 
 function LikesRoutes(app) {
@@ -33,6 +32,8 @@ function LikesRoutes(app) {
 			return;
 		}
 		const userID = currentUser._id;
+		console.log("BUY PARAMETERS")
+		console.log(req.params)
 		const stockTicker = req.params["stockTicker"];
 
 		let owned = await ownedDao.getOwned(userID);
@@ -83,40 +84,60 @@ function LikesRoutes(app) {
 
 	const getOwnedStocks = async (req, res) => {
 		const userID = req.params.uid;
-		console.log(userID)
+		// console.log(userID)
 		if (!userID) {
 			res.sendStatus(401);
 			return;
 		}
 		let owned = await ownedDao.getOwned(userID);
-		console.log("Owned");
-		console.log(owned);
+		// console.log("Owned");
+		// console.log(owned);
 		res.json(owned);
 	}
 
 	const getAllLikes = async (req, res) => {
 		const userID = req.params.uid;
-		console.log(userID);
+		// console.log(userID);
 		if (!userID) {
 			res.sendStatus(401);
 			return;
 		}
 		let likes = await likesDao.getAllStocks();
-		console.log(likes)
+		// console.log(likes)
 		if (!likes) {
 			res.sendStatus(403);
 			return;
 		}
-		console.log("Likes");
-		console.log(likes);
+		// console.log("Likes");
+		// console.log(likes);
 		res.json(likes);
 	}
 
-	app.post("/api/likes/:stockTicker/like", userLikesStock);
-	app.post("/api/owned/:stockTicker/buy", userBuysStock);
-	app.post("/api/owned/:stockTicker/sell", userSellsStock);
+	const getOwners = async (req, res) => {
+		const ticker = req.params.stockTicker;
+		if (!ticker) {
+			res.sendStatus(401);
+			return;
+		}
+		const stocks = await ownedDao.getAllOwned();
+		// console.log("All owned")
+		// console.log(stocks)
+		let owners = [];
+		for (let i=0;i<stocks.length;i++){
+			if (stocks[i].owned[ticker] && stocks[i].owned[ticker] !== 0) {
+				// console.log(stocks[i]._id)
+				owners.push(stocks[i].user)
+			}
+		}
+		res.json(owners)
+	}
+
+	app.post("/api/likes/like/:stockTicker", userLikesStock);
+	app.post("/api/owned/buy/:stockTicker", userBuysStock);
+	app.post("/api/owned/sell/:stockTicker", userSellsStock);
 	app.get("/api/owned/:uid/get", getOwnedStocks);
 	app.get("/api/likes/:uid/get", getAllLikes);
+	app.get("/api/owned/get/:stockTicker", getOwners);
 }
 
 export default LikesRoutes;
