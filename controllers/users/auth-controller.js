@@ -1,6 +1,6 @@
 import * as usersDao from "./users-dao.js";
 
-// A6 AuthController
+// A6 AuthController from homework
 const AuthController = (app) => {
 	const register = async (req, res) => {
 		const user = await usersDao.findUserByUsername(req.body.username);

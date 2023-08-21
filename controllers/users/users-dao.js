@@ -1,3 +1,4 @@
+// From Homework Assignments
 import usersModel from "./users-model.js";
 export const findAllUsers = () => usersModel.find();
 export const findUserById = (id) => usersModel.findById(id);

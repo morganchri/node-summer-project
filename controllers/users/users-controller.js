@@ -1,5 +1,6 @@
 import * as usersDao from "./users-dao.js";
 
+// adapted from homework assignments
 const UsersController = (app) => {
 	app.get('/api/users', findAllUsers);
 	app.get('/api/users/:uid', findUserById);
