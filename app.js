@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(
 	cors({
 			 credentials: true,
-			 origin: process.env.FRONTEND_URL_LOCAL
+			 origin: [process.env.FRONTEND_URL_LOCAL, process.env.FRONTEND_URL]
 		 })
 );
 
