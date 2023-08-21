@@ -132,12 +132,32 @@ function LikesRoutes(app) {
 		res.json(owners)
 	}
 
+	const getLikes = async (req, res) => {
+		let likes = await likesDao.getAllStocks();
+		if (!likes) {
+			res.sendStatus(403);
+			return;
+		}
+		res.json(likes);
+	}
+
+	const getAllOwned = async (req, res) => {
+		let owned = await ownedDao.getAllOwned();
+		if (!owned) {
+			res.sendStatus(403);
+			return;
+		}
+		res.json(owned);
+	}
+
 	app.post("/api/likes/like/:stockTicker", userLikesStock);
 	app.post("/api/owned/buy/:stockTicker", userBuysStock);
 	app.post("/api/owned/sell/:stockTicker", userSellsStock);
 	app.get("/api/owned/:uid/get", getOwnedStocks);
 	app.get("/api/likes/:uid/get", getAllLikes);
 	app.get("/api/owned/get/:stockTicker", getOwners);
+	app.get("/api/likes/get", getLikes);
+	app.get("/api/owned/getAll", getAllOwned);
 }
 
 export default LikesRoutes;
